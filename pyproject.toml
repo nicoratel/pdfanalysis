@@ -1,0 +1,124 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdfanalysis"
+version = "1.0.0"
+description = "Automated PDF structure analysis for nanoparticles"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Nicolas Ratel-Ramond", email = "nicolas.ratel-ramond@insa-toulouse.fr"}
+]
+keywords = ["PDF", "pair distribution function", "nanoparticles", "structure analysis", "crystallography"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "matplotlib>=3.3.0",
+    "ase>=3.22.0",
+    "diffpy-cmi>=3.0.0",
+    "tqdm>=4.60.0",
+    "psutil>=5.8.0",
+]
+
+[project.optional-dependencies]
+# Dépendances pour l'application Streamlit
+app = [
+    "streamlit>=1.20.0",
+    "plotly>=5.0.0",
+]
+
+# Dépendances pour les notebooks Jupyter
+notebook = [
+    "ipython>=7.0.0",
+    "jupyter>=1.0.0",
+    "py3Dmol>=2.0.0",
+]
+
+# Dépendances pour le développement
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+]
+
+# Toutes les dépendances
+all = [
+    "streamlit>=1.20.0",
+    "plotly>=5.0.0",
+    "ipython>=7.0.0",
+    "jupyter>=1.0.0",
+    "py3Dmol>=2.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "mypy>=0.950",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/pdfanalysis"
+Documentation = "https://pdfanalysis.readthedocs.io"
+Repository = "https://github.com/yourusername/pdfanalysis.git"
+"Bug Tracker" = "https://github.com/yourusername/pdfanalysis/issues"
+
+[project.scripts]
+pdfanalysis-app = "pdfanalysis.app_pdf_analysis:main"
+
+[tool.setuptools]
+packages = ["pdfanalysis"]
+
+[tool.setuptools.package-data]
+pdfanalysis = ["*.md", "*.txt"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
+pythonpath = [
+    "."
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
