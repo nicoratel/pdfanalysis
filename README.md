@@ -141,6 +141,7 @@ streamlit run app_pdf_analysis.py
 ## Package Structure
 
 ```
+app_pdf_analysis.py             # Streamlit web interface
 pdfanalysis/
 ├── __init__.py                      # Package initialization
 ├── pdf_extractor.py                 # PDF extraction from experimental data
@@ -151,7 +152,6 @@ pdfanalysis/
 ├── pdf_refinement_fast.py          # Fast refinement for screening
 ├── structure_screener.py           # Structure screening
 ├── pdfanalysis.py                  # Main analysis workflow
-└── app_pdf_analysis.py             # Streamlit web interface
 ```
 
 ## Features
