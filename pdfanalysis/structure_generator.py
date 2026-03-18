@@ -13,7 +13,7 @@ from ase import Atoms
 
 
 class StructureGenerator():
-    def __init__(self,pdfpath,cif_file:str,size_array:tuple=None, min_params:tuple=[1,1],max_params:tuple=[10,10],sphere_only: bool=False,
+    def __init__(self,pdfpath,cif_file:str=None,size_array:tuple=None, min_params:tuple=[1,1],max_params:tuple=[10,10],sphere_only: bool=False,
                  auto_mode: bool=False, pdf_file: str=None, r_coh: float=None, n_sizes: int=2, tolerance: float=0.1,
                  max_search_param: int=20, derivative_sigma: float=5.0, amplitude_sigma: float=3.0, 
                  window_size: int=10, derivative_weight: float=0.0, noise_window_start: float=0.85, 
@@ -83,27 +83,28 @@ class StructureGenerator():
             self.size_array=size_array
             self.r_max = None
         
-        self.structure=read(self.cif_file)
-        #SG=Spacegroup(structure)
-        SG=Spacegroup(get_spacegroup(self.structure))
-        
-        self.SGNo=SG.no
-        self.lattice_parameters=self.structure.get_cell()
-        self.a,self.b,self.c=self.lattice_parameters.lengths()
-        self.alpha,self.beta,self.gamma=self.lattice_parameters.angles()
-        self.atoms=self.structure.get_chemical_symbols()
-        self.atom_positions=self.structure.get_scaled_positions()
-        self.bravais=self.get_crystal_type()
-        print('Crystal structure loaded from cif:')
-        print(f'Cell edges: a={self.a:4f}, b={self.b:4f}, c={self.c:4f}')
-        print(f'Cell angles: $\\alpha$={self.alpha:.2f},$\\beta$={self.beta:.2f}, $\\gamma$={self.gamma:.2f} ')
-        print(f'Bravais unit cell:{self.bravais}')     
-        print('Atomic Positions:')
-        i=0
-        for frac_coord in enumerate(self.atom_positions):
-            print(f"Atom {self.atoms[i]}: {frac_coord}")
-            i+=1
-        pass
+        if self.cif_file is not None:
+            self.structure=read(self.cif_file)
+            #SG=Spacegroup(structure)
+            SG=Spacegroup(get_spacegroup(self.structure))
+            
+            self.SGNo=SG.no
+            self.lattice_parameters=self.structure.get_cell()
+            self.a,self.b,self.c=self.lattice_parameters.lengths()
+            self.alpha,self.beta,self.gamma=self.lattice_parameters.angles()
+            self.atoms=self.structure.get_chemical_symbols()
+            self.atom_positions=self.structure.get_scaled_positions()
+            self.bravais=self.get_crystal_type()
+            print('Crystal structure loaded from cif:')
+            print(f'Cell edges: a={self.a:4f}, b={self.b:4f}, c={self.c:4f}')
+            print(f'Cell angles: $\\alpha$={self.alpha:.2f},$\\beta$={self.beta:.2f}, $\\gamma$={self.gamma:.2f} ')
+            print(f'Bravais unit cell:{self.bravais}')     
+            print('Atomic Positions:')
+            i=0
+            for frac_coord in enumerate(self.atom_positions):
+                print(f"Atom {self.atoms[i]}: {frac_coord}")
+                i+=1
+            pass
         self.min_params=min_params
         self.max_params=max_params
         self.sphere_only=sphere_only
