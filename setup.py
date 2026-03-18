@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.0",
+    version="0.1.1",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -79,11 +79,11 @@ setup(
     },
     
     # Entry points for command-line scripts
-    # entry_points={
-    #     "console_scripts": [
-    #         "pdfanalysis-app=pdfanalysis.app_pdf_analysis:main",
-    #     ],
-    # },
+    entry_points={
+        "console_scripts": [
+            "pdfanalysis-app=app_pdf_analysis:main",
+        ],
+    },
     
     # Package data
     package_data={
