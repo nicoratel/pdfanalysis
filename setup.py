@@ -12,7 +12,7 @@ This setup.py is provided for backwards compatibility.
 from setuptools import setup, find_packages
 import os
 
-# Read long description from README if it exists
+# Read long description from README 
 long_description = ""
 readme_path = os.path.join(os.path.dirname(__file__), "README.md")
 if os.path.exists(readme_path):
@@ -21,13 +21,13 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="1.0.0",
+    version="0.1.0",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Nicolas Ratel-Ramond",
     author_email="nicolas.ratel-ramond@insa-toulouse.fr",
-    url="https://github.com/yourusername/pdfanalysis",
+    url="https://github.com/nicoratel/pdfanalysis",
     packages=find_packages(),
     python_requires=">=3.8",
     
@@ -79,11 +79,11 @@ setup(
     },
     
     # Entry points for command-line scripts
-    entry_points={
-        "console_scripts": [
-            "pdfanalysis-app=pdfanalysis.app_pdf_analysis:main",
-        ],
-    },
+    # entry_points={
+    #     "console_scripts": [
+    #         "pdfanalysis-app=pdfanalysis.app_pdf_analysis:main",
+    #     ],
+    # },
     
     # Package data
     package_data={
@@ -107,8 +107,7 @@ setup(
     keywords="PDF pair-distribution-function nanoparticles structure-analysis crystallography",
     
     project_urls={
-        "Documentation": "https://pdfanalysis.readthedocs.io",
-        "Source": "https://github.com/yourusername/pdfanalysis",
-        "Bug Tracker": "https://github.com/yourusername/pdfanalysis/issues",
+        "Source": "https://github.com/nicoratel/pdfanalysis",
+        "Bug Tracker": "https://github.com/nicoratel/pdfanalysis/issues",
     },
 )

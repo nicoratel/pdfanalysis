@@ -22,32 +22,42 @@ The recommended workflow for a single pdf is the following:
 
 ## Installation
 
-### Basic installation
+### Install from PyPI (recommended)
 
 ```bash
+pip install pdfanalysis
+```
+
+### Install with optional dependencies
+
+```bash
+# For Streamlit web app
+pip install pdfanalysis[app]
+
+# For Jupyter notebooks
+pip install pdfanalysis[notebook]
+
+# For development tools
+pip install pdfanalysis[dev]
+
+# Install everything
+pip install pdfanalysis[all]
+```
+
+### Install from source
+
+```bash
+git clone https://github.com/nicoratel/pdfanalysis.git
+cd pdfanalysis
 pip install .
 ```
 
 ### Development installation (editable mode)
 
 ```bash
+git clone https://github.com/nicoratel/pdfanalysis.git
+cd pdfanalysis
 pip install -e .
-```
-
-### With optional dependencies
-
-```bash
-# For Streamlit web app
-pip install .[app]
-
-# For Jupyter notebooks
-pip install .[notebook]
-
-# For development tools
-pip install .[dev]
-
-# Install everything
-pip install .[all]
 ```
 
 ## Dependencies
@@ -122,19 +132,15 @@ rw = refinement.refine()
 
 ### Running the Streamlit app
 
+After installing with the `app` extras:
+
 ```bash
 streamlit run app_pdf_analysis.py
-```
-
-Or if installed as a script:
-```bash
-pdfanalysis-app
 ```
 
 ## Package Structure
 
 ```
-app_pdf_analysis.py             # Streamlit web interface
 pdfanalysis/
 ├── __init__.py                      # Package initialization
 ├── pdf_extractor.py                 # PDF extraction from experimental data
@@ -145,7 +151,7 @@ pdfanalysis/
 ├── pdf_refinement_fast.py          # Fast refinement for screening
 ├── structure_screener.py           # Structure screening
 ├── pdfanalysis.py                  # Main analysis workflow
-
+└── app_pdf_analysis.py             # Streamlit web interface
 ```
 
 ## Features
