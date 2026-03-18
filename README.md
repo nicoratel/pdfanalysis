@@ -22,11 +22,31 @@ The recommended workflow for a single pdf is the following:
 
 ## Installation
 
-### Install from PyPI (recommended)
+### Option 1: Using conda (recommended)
+
+The easiest way to install with all dependencies:
+
+```bash
+# Clone or download environment.yml, then:
+conda env create -f environment.yml
+conda activate pdfanalysis
+```
+
+Or manually:
+```bash
+conda create -n pdfanalysis python=3.11
+conda activate pdfanalysis
+conda install -c conda-forge diffpy-cmi ase spglib streamlit plotly
+pip install pdfanalysis
+```
+
+### Option 2: Using pip only
 
 ```bash
 pip install pdfanalysis
 ```
+
+**Note:** With pip, `diffpy-cmi` may require additional system dependencies or conda installation.
 
 This installs the complete package including the Streamlit web interface.
 
