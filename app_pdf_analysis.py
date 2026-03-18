@@ -218,18 +218,26 @@ with st.sidebar:
     st.markdown("### ⚙️ Parameters")
 
     with st.expander("Structure Generation", expanded=True):
-        tolerance_size = st.number_input("Size tolerance (Å)", value=3.0, step=0.5, min_value=0.5)
-        n_spheres      = st.number_input("Number of sphere sizes", value=2, step=1, min_value=1, max_value=20)
-        max_search     = st.number_input("Max search parameter", value=25, step=1, min_value=5)
+        tolerance_size = st.number_input("Size tolerance (Å)", value=3.0, step=0.5, min_value=0.5,
+                                         help="Absolute tolerance around r_coh for structure generation (±tolerance Å)")
+        n_spheres      = st.number_input("Number of sphere sizes", value=2, step=1, min_value=1, max_value=20,
+                                         help="Number of different sphere sizes to generate in automatic mode")
+        max_search     = st.number_input("Max search parameter", value=25, step=1, min_value=5,
+                                         help="Maximum value for the parameters used for structures generation")
 
     with st.expander("Fast Screening"):
-        rbins_fast      = st.number_input("rbins (fast)", value=5, step=1, min_value=1)
-        rmin            = st.number_input("rmin (Å)", value=2.0, step=0.1)
-        rmax_fast       = st.number_input("rmax fast (Å)", value=15.0, step=1.0)
-        threshold_fast  = st.number_input("Threshold % (fast)", value=5.0, step=1.0)
+        rbins_fast      = st.number_input("rbins (fast)", value=5, step=1, min_value=1,
+                                          help="Bin size for fast screening (larger bins = faster)")
+        rmin            = st.number_input("rmin (Å)", value=2.0, step=0.1,
+                                          help="Minimum distance for refinement (typically 1.5-2.5 Å)")
+        rmax_fast       = st.number_input("rmax fast (Å)", value=15.0, step=1.0,
+                                          help="Maximum distance for fast screening")
+        threshold_fast  = st.number_input("Threshold % (fast)", value=5.0, step=1.0,
+                                          help="Rw tolerance for candidate selection: structures with Rw within min(Rw) ± threshold% are kept")
 
     with st.expander("Fine Refinement"):
-        rbins_fine = st.number_input("rbins (fine)", value=1, step=1, min_value=1)
+        rbins_fine = st.number_input("rbins (fine)", value=1, step=1, min_value=1,
+                                     help="Bin size for fine refinement (1 Å recommended for high precision)")
 
 # ════════════════════════════════════════════════════════════════════════════════
 # MAIN PANEL
