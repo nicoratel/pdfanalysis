@@ -22,35 +22,31 @@ The recommended workflow for a single pdf is the following:
 
 ## Installation
 
-### Option 1: Using conda (recommended)
+**Important:** This package requires `diffpy.cmi` which cannot be installed via pip. You must use conda.
 
-The easiest way to install with all dependencies:
+### Recommended method: Using environment.yml
 
 ```bash
-# Clone or download environment.yml, then:
+# Download the environment file from GitHub or clone the repository
 conda env create -f environment.yml
 conda activate pdfanalysis
 ```
 
-Or manually:
+### Alternative: Manual installation
+
 ```bash
+# 1. Create and activate conda environment
 conda create -n pdfanalysis python=3.11
 conda activate pdfanalysis
-conda install -c conda-forge diffpy-cmi ase spglib streamlit plotly
+
+# 2. Install diffpy.cmi and other scientific dependencies via conda
+conda install -c conda-forge diffpy.cmi ase spglib
+
+# 3. Install pdfanalysis from PyPI
 pip install pdfanalysis
 ```
 
-### Option 2: Using pip only
-
-```bash
-pip install pdfanalysis
-```
-
-**Note:** With pip, `diffpy-cmi` may require additional system dependencies or conda installation.
-
-This installs the complete package including the Streamlit web interface.
-
-### Install with optional dependencies
+### Optional dependencies
 
 ```bash
 # For Jupyter notebooks with 3D visualization
@@ -66,22 +62,23 @@ pip install pdfanalysis[all]
 ### Install from source
 
 ```bash
+# Clone the repository
 git clone https://github.com/nicoratel/pdfanalysis.git
 cd pdfanalysis
+
+# Install diffpy.cmi via conda first
+conda install -c conda-forge diffpy.cmi ase spglib
+
+# Then install the package
 pip install .
-```
-
-### Development installation (editable mode)
-
-```bash
-git clone https://github.com/nicoratel/pdfanalysis.git
-cd pdfanalysis
-pip install -e .
 ```
 
 ## Dependencies
 
-### Core dependencies
+### Required (must be installed via conda)
+- `diffpy.cmi` - PDF calculation and fitting framework
+
+### Core dependencies (installed automatically via pip)
 - `numpy` - Numerical computations
 - `scipy` - Scientific computing and optimization
 - `matplotlib` - Plotting and visualization
