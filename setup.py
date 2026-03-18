@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.4",
+    version="0.1.5",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -38,7 +38,10 @@ setup(
         "scipy>=1.7.0",
         "matplotlib>=3.3.0",
         "ase>=3.22.0",
-        "diffpy-cmi>=3.0.0",
+        "spglib>=2.0.0",
+        "diffpy.structure>=3.0.0",
+        "diffpy.srfit>=3.0.0",
+        "diffpy.srreal>=3.0.0",
         "tqdm>=4.60.0",
         "psutil>=5.8.0",
         "streamlit>=1.20.0",

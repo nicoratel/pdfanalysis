@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdfanalysis"
-version = "0.1.4"
+version = "0.1.5"
 description = "Automated PDF structure analysis for nanoparticles"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -31,7 +31,10 @@ dependencies = [
     "scipy>=1.7.0",
     "matplotlib>=3.3.0",
     "ase>=3.22.0",
-    "diffpy-cmi>=3.0.0",
+    "spglib>=2.0.0",
+    "diffpy.structure>=3.0.0",
+    "diffpy.srfit>=3.0.0",
+    "diffpy.srreal>=3.0.0",
     "tqdm>=4.60.0",
     "psutil>=5.8.0",
     "streamlit>=1.20.0",
