@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.2",
+    version="0.1.3",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -41,15 +41,12 @@ setup(
         "diffpy-cmi>=3.0.0",
         "tqdm>=4.60.0",
         "psutil>=5.8.0",
+        "streamlit>=1.20.0",
+        "plotly>=5.0.0",
     ],
     
     # Optional dependencies
     extras_require={
-        # Streamlit app
-        "app": [
-            "streamlit>=1.20.0",
-            "plotly>=5.0.0",
-        ],
         # Jupyter notebooks
         "notebook": [
             "ipython>=7.0.0",
@@ -66,8 +63,6 @@ setup(
         ],
         # All optional dependencies
         "all": [
-            "streamlit>=1.20.0",
-            "plotly>=5.0.0",
             "ipython>=7.0.0",
             "jupyter>=1.0.0",
             "py3Dmol>=2.0.0",

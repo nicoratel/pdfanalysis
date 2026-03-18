@@ -28,13 +28,12 @@ The recommended workflow for a single pdf is the following:
 pip install pdfanalysis
 ```
 
+This installs the complete package including the Streamlit web interface.
+
 ### Install with optional dependencies
 
 ```bash
-# For Streamlit web app
-pip install pdfanalysis[app]
-
-# For Jupyter notebooks
+# For Jupyter notebooks with 3D visualization
 pip install pdfanalysis[notebook]
 
 # For development tools
@@ -79,6 +78,16 @@ pip install -e .
 - `py3Dmol` - 3D molecular visualization
 
 ## Quick Start
+
+### Running the Streamlit app
+
+After installation, launch the web interface with:
+
+```bash
+pdfanalysis-app
+```
+
+This will automatically start the Streamlit server and open the app in your default browser.
 
 ### Using the main analysis function
 
@@ -130,21 +139,7 @@ refinement = PDFRefinement(
 rw = refinement.refine()
 ```
 
-### Running the Streamlit app
 
-After installing with the `app` extras:
-
-```bash
-pip install pdfanalysis[app]
-```
-
-Launch the web interface with:
-
-```bash
-pdfanalysis-app
-```
-
-This will automatically start the Streamlit server and open the app in your default browser.
 
 ## Package Structure
 
