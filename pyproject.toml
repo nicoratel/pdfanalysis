@@ -78,8 +78,8 @@ Homepage = "https://github.com/nicoratel/pdfanalysis"
 Repository = "https://github.com/nicoratel/pdfanalysis.git"
 "Bug Tracker" = "https://github.com/nicoratel/pdfanalysis/issues"
 
-# [project.scripts]
-# pdfanalysis-app = "pdfanalysis.app_pdf_analysis:main"
+[project.scripts]
+pdfanalysis-app = "app_pdf_analysis:main"
 
 [tool.setuptools]
 packages = ["pdfanalysis"]
