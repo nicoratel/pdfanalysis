@@ -223,7 +223,7 @@ with st.sidebar:
         n_spheres      = st.number_input("Number of sphere sizes", value=2, step=1, min_value=1, max_value=20,
                                          help="Number of different sphere sizes to generate in automatic mode")
         max_search     = st.number_input("Max search parameter", value=25, step=1, min_value=5,
-                                         help="Maximum value for the parameters used for structures generation")
+                                         help="Maximum value for the ase parameters used for structures generation")
 
     with st.expander("Fast Screening"):
         rbins_fast      = st.number_input("rbins (fast)", value=5, step=1, min_value=1,
