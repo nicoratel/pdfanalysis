@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdfanalysis"
-version = "0.1.8"
+version = "0.1.9"
 description = "Automated PDF structure analysis for nanoparticles"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -81,6 +81,9 @@ py-modules = ["app_pdf_analysis"]
 
 [tool.setuptools.package-data]
 pdfanalysis = ["*.md", "*.txt"]
+
+[tool.setuptools.data-files]
+"Scripts" = ["pdfanalysis-app.bat"]
 
 [tool.black]
 line-length = 100

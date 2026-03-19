@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.8",
+    version="0.1.9",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -92,6 +92,11 @@ setup(
     package_data={
         "pdfanalysis": ["*.md", "*.txt"],
     },
+    
+    # Include additional files in the distribution
+    data_files=[
+        ('Scripts', ['pdfanalysis-app.bat']),
+    ],
     
     # Classifiers
     classifiers=[
