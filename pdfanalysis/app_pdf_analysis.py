@@ -529,7 +529,7 @@ with col_right:
 st.divider()
 st.caption("PDF Structure Analyzer · Built with Streamlit · Powered by diffpy.cmi")
 
-
+"""
 # ── CLI entry point ───────────────────────────────────────────────────────────
 def main():
     """Entry point for CLI command 'pdfanalysis-app'"""
@@ -547,3 +547,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""
