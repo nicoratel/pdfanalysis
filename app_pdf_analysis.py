@@ -543,3 +543,7 @@ def main():
     # Run streamlit with this script
     sys.argv = ["streamlit", "run", script_path]
     sys.exit(stcli.main())
+
+
+if __name__ == "__main__":
+    main()

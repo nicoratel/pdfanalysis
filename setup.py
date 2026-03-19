@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.7",
+    version="0.1.8",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -31,6 +31,7 @@ setup(
     packages=find_packages(),
     py_modules=['app_pdf_analysis'],  # Include app file at root
     python_requires=">=3.8",
+    include_package_data=True,
     
     # Core dependencies
     install_requires=[
@@ -79,6 +80,12 @@ setup(
         "console_scripts": [
             "pdfanalysis-app=app_pdf_analysis:main",
         ],
+    },
+    # Ensure scripts are properly installed on Windows
+    options={
+        "bdist_wheel": {
+            "universal": False,
+        }
     },
     
     # Package data

@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include WINDOWS_INSTALL.md
+include environment.yml
+include pyproject.toml
+include *.bat
+include *.sh
+recursive-include pdfanalysis *.py
+global-exclude __pycache__
+global-exclude *.py[co]
