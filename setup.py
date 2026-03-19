@@ -21,7 +21,7 @@ if os.path.exists(readme_path):
 
 setup(
     name="pdfanalysis",
-    version="0.1.9",
+    version="0.1.10",
     description="Automated PDF structure analysis for nanoparticles",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -29,7 +29,6 @@ setup(
     author_email="nicolas.ratel-ramond@insa-toulouse.fr",
     url="https://github.com/nicoratel/pdfanalysis",
     packages=find_packages(),
-    py_modules=['app_pdf_analysis'],  # Include app file at root
     python_requires=">=3.8",
     include_package_data=True,
     
@@ -78,7 +77,7 @@ setup(
     # Entry points for command-line scripts
     entry_points={
         "console_scripts": [
-            "pdfanalysis-app=app_pdf_analysis:main",
+            "pdfanalysis-app=pdfanalysis.app_pdf_analysis:main",
         ],
     },
     # Ensure scripts are properly installed on Windows
