@@ -3,10 +3,20 @@ PDF Analysis Streamlit App
 Based on perform_automatic_pdf_analysis from pdfanalysis.py
 """
 
+import sys
+import os
+
+# Ensure the project root (parent of this directory) is in sys.path so that
+# `import pdfanalysis` resolves to the package, not to pdfanalysis.py inside
+# this directory (which would cause "attempted relative import with no known
+# parent package" when Streamlit adds the script's directory to sys.path[0]).
+_project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
+
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
-import os
 import tempfile
 import shutil
 
@@ -529,22 +539,12 @@ with col_right:
 st.divider()
 st.caption("PDF Structure Analyzer · Built with Streamlit · Powered by diffpy.cmi")
 
-"""
+
 # ── CLI entry point ───────────────────────────────────────────────────────────
 def main():
     """Entry point for CLI command 'pdfanalysis-app'"""
-    import sys
-    import os
-    from streamlit.web import cli as stcli
-    
-    # Get the path to this file
-    script_path = os.path.abspath(__file__)
-    
-    # Run streamlit with this script
-    sys.argv = ["streamlit", "run", script_path]
-    sys.exit(stcli.main())
+    pass  # L'entrée CLI ne fait rien ici, Streamlit doit être lancé via la commande shell
 
 
 if __name__ == "__main__":
     main()
-"""
