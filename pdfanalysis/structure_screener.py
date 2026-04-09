@@ -69,10 +69,11 @@ class StructureScreener():
 
     def run(self):
         """
-        PDF refinement of each PDF file in pdffile_dir with each structure file in strufile_dir
+        PDF refinement of each PDF file in pdffile_dir with each structure file in strufile_dir.
+
         Returns:
-            - If fast_screening=True: (best_results, candidate_list) tuple
-            - If fast_screening=False: best_results dict only
+            tuple or dict: If fast_screening=True, returns (best_results, candidate_list).
+            If fast_screening=False, returns best_results dict only.
         """
         best_results={}
         candidate_list = {}
