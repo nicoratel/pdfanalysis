@@ -275,7 +275,7 @@ with st.sidebar:
     with st.expander("Instrument Parameters"):
         qdamp  = st.number_input("Qdamp",  value=0.043, step=0.001, min_value=0.0, format="%f",
                                  help="PDF envelope dampening factor due to limited Q-resolution (used in both fast and fine refinements)")
-        qbroad = st.number_input("Qbroad", value=0.300, step=0.01,  min_value=0.0, format="%f",
+        qbroad = st.number_input("Qbroad", value=0.0300, step=0.01,  min_value=0.0, format="%f",
                                  help="PDF peak broadening factor from Q-resolution (used in both fast and fine refinements)")
 
 # ════════════════════════════════════════════════════════════════════════════════
