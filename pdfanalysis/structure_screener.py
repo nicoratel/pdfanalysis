@@ -148,6 +148,8 @@ class StructureScreener():
                     calc = PDFRefinementFast(
                         pdffile,
                         strufile,
+                        qdamp=self.qdamp,
+                        qbroad=self.qbroad,
                         rbins=self.rbins,
                         rmin=self.rmin,
                         rmax_fast=self.rmax_fast
@@ -155,6 +157,8 @@ class StructureScreener():
                 else:
                     calc=PDFRefinement(pdffile,
                                     strufile,
+                                    qdamp=self.qdamp,
+                                    qbroad=self.qbroad,
                                     refinement_tags=self.refinement_tags,
                                     save_tag=self.save_tag,
                                     rbins=self.rbins,

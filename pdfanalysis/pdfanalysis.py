@@ -25,6 +25,9 @@ def perform_automatic_pdf_analysis(
         threshold_percent_fast=5,
         # final refinement parameters
         rbins_fine = 1,
+        # instrument parameters
+        qdamp: float = 0.043,
+        qbroad: float = 0.300,
         # display control
         verbose=None):
     """
@@ -146,7 +149,10 @@ def perform_automatic_pdf_analysis(
         rbins=rbins_fast,                       # Grid coarse
         rmin=rmin,
         rmax_fast=rmax_fast,
-        threshold_percent=threshold_percent_fast )
+        threshold_percent=threshold_percent_fast,
+        qdamp=qdamp,
+        qbroad=qbroad,
+    )
 
     best_results_fast, candidate_list = screener_fast.run()
     
@@ -178,8 +184,10 @@ def perform_automatic_pdf_analysis(
         save_tag=True,                # Sauvegarder les résultats détaillés
         rbins=rbins_fine,                       # Grille fine
         rmin=rmin,
-        threshold_percent=0.0          # Critère de sélection
-)
+        threshold_percent=0.0,         # Critère de sélection
+        qdamp=qdamp,
+        qbroad=qbroad,
+    )
     best_results_fine = screener_fine.run()  
 
     # save reuslts to JSON

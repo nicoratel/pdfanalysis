@@ -213,9 +213,32 @@ with st.sidebar:
 
     st.divider()
     st.markdown("### 📁 Output Directory (Optional)")
-    output_dir = st.text_input("Save results to",
-                                placeholder="/data/experiment/ (leave empty for temp)",
-                                help="Optional : all results stored if provided. If no directory is specified, a temporary folder will be used and results will be deleted (a summary can be saved in pdf format).")
+    # Transfer value picked by tkinter BEFORE the widget is instantiated
+    if "output_dir_pending" in st.session_state:
+        st.session_state["output_dir_text"] = st.session_state.pop("output_dir_pending")
+    col_input, col_btn = st.columns([4, 1])
+    with col_input:
+        output_dir = st.text_input("Save results to",
+                                    placeholder="/data/experiment/ (leave empty for temp)",
+                                    help="Optional : all results stored if provided. If no directory is specified, a temporary folder will be used and results will be deleted (a summary can be saved in pdf format).",
+                                    key="output_dir_text")
+    with col_btn:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("📂 Browse", help="Open a folder picker dialog"):
+            try:
+                import tkinter as tk
+                from tkinter import filedialog
+                root = tk.Tk()
+                root.withdraw()
+                root.wm_attributes("-topmost", True)
+                selected = filedialog.askdirectory(title="Select output directory", parent=root)
+                root.destroy()
+                if selected:
+                    st.session_state["output_dir_pending"] = selected
+                    st.rerun()
+            except Exception as e:
+                st.warning(f"Folder picker unavailable — {e}")
+    output_dir = st.session_state.get("output_dir_text", "")
     if output_dir:
         if os.path.isdir(output_dir):
             st.success(f"✓ `{output_dir}` (results will be kept)")
@@ -248,6 +271,12 @@ with st.sidebar:
     with st.expander("Fine Refinement"):
         rbins_fine = st.number_input("rbins (fine)", value=1, step=1, min_value=1,
                                      help="Bin size for fine refinement (1 Å recommended for high precision)")
+
+    with st.expander("Instrument Parameters"):
+        qdamp  = st.number_input("Qdamp",  value=0.043, step=0.001, min_value=0.0, format="%f",
+                                 help="PDF envelope dampening factor due to limited Q-resolution (used in both fast and fine refinements)")
+        qbroad = st.number_input("Qbroad", value=0.300, step=0.01,  min_value=0.0, format="%f",
+                                 help="PDF peak broadening factor from Q-resolution (used in both fast and fine refinements)")
 
 # ════════════════════════════════════════════════════════════════════════════════
 # MAIN PANEL
@@ -449,6 +478,8 @@ with col_right:
                     rmax_fast=float(rmax_fast),
                     threshold_percent_fast=float(threshold_fast),
                     rbins_fine=int(rbins_fine),
+                    qdamp=float(qdamp),
+                    qbroad=float(qbroad),
                     verbose=False,
                 )
             finally:
@@ -543,8 +574,15 @@ st.caption("PDF Structure Analyzer · Built with Streamlit · Powered by diffpy.
 # ── CLI entry point ───────────────────────────────────────────────────────────
 def main():
     """Entry point for CLI command 'pdfanalysis-app'"""
-    pass  # L'entrée CLI ne fait rien ici, Streamlit doit être lancé via la commande shell
+    import subprocess
+    import sys
+    subprocess.run(
+        [sys.executable, "-m", "streamlit", "run", __file__] + sys.argv[1:],
+        check=True,
+    )
 
 
 if __name__ == "__main__":
-    main()
+    from streamlit.runtime import exists as _st_exists
+    if not _st_exists():
+        main()
