@@ -3,20 +3,15 @@ PDF Analysis Streamlit App
 Based on perform_automatic_pdf_analysis from pdfanalysis.py
 """
 
-import sys
-import os
-
-# Ensure the project root (parent of this directory) is in sys.path so that
-# `import pdfanalysis` resolves to the package, not to pdfanalysis.py inside
-# this directory (which would cause "attempted relative import with no known
-# parent package" when Streamlit adds the script's directory to sys.path[0]).
-_project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _project_root not in sys.path:
-    sys.path.insert(0, _project_root)
+# Required for Windows: prevents infinite process spawning when multiprocessing.Pool
+# is used inside a Streamlit app (spawn method re-imports __main__ in each worker).
+import multiprocessing
+multiprocessing.freeze_support()
 
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
+import os
 import tempfile
 import shutil
 
@@ -212,71 +207,31 @@ with st.sidebar:
                                     help="Reference crystal structure")
 
     st.divider()
-    st.markdown("### 📁 Output Directory (Optional)")
-    # Transfer value picked by tkinter BEFORE the widget is instantiated
-    if "output_dir_pending" in st.session_state:
-        st.session_state["output_dir_text"] = st.session_state.pop("output_dir_pending")
-    col_input, col_btn = st.columns([4, 1])
-    with col_input:
-        output_dir = st.text_input("Save results to",
-                                    placeholder="/data/experiment/ (leave empty for temp)",
-                                    help="Optional : all results stored if provided. If no directory is specified, a temporary folder will be used and results will be deleted (a summary can be saved in pdf format).",
-                                    key="output_dir_text")
-    with col_btn:
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("📂 Browse", help="Open a folder picker dialog"):
-            try:
-                import tkinter as tk
-                from tkinter import filedialog
-                root = tk.Tk()
-                root.withdraw()
-                root.wm_attributes("-topmost", True)
-                selected = filedialog.askdirectory(title="Select output directory", parent=root)
-                root.destroy()
-                if selected:
-                    st.session_state["output_dir_pending"] = selected
-                    st.rerun()
-            except Exception as e:
-                st.warning(f"Folder picker unavailable — {e}")
-    output_dir = st.session_state.get("output_dir_text", "")
-    if output_dir:
-        if os.path.isdir(output_dir):
-            st.success(f"✓ `{output_dir}` (results will be kept)")
-        else:
-            st.info(f"📁 `{output_dir}` will be created (results will be kept)")
-    else:
-        st.info("💡 No output directory specified — will use temporary folder")
+    st.markdown("### 📁 Output Directory")
+    output_dir = st.text_input("Save results to",
+                                placeholder="/data/experiment/",
+                                help="Dossier où seront créés les structures, fits et rapport PDF")
+    if output_dir and not os.path.isdir(output_dir):
+        st.error("⚠️ Directory not found")
+    elif output_dir:
+        st.success(f"✓ `{output_dir}`")
 
     st.divider()
     st.markdown("### ⚙️ Parameters")
 
     with st.expander("Structure Generation", expanded=True):
-        tolerance_size = st.number_input("Size tolerance (Å)", value=3.0, step=0.5, min_value=0.5,
-                                         help="Absolute tolerance around r_coh for structure generation (±tolerance Å)")
-        n_spheres      = st.number_input("Number of sphere sizes", value=2, step=1, min_value=1, max_value=20,
-                                         help="Number of different sphere sizes to generate in automatic mode")
-        max_search     = st.number_input("Max search parameter", value=25, step=1, min_value=5,
-                                         help="Maximum value for the ase parameters used for structures generation")
+        tolerance_size = st.number_input("Size tolerance (Å)", value=3.0, step=0.5, min_value=0.5)
+        n_spheres      = st.number_input("Number of sphere sizes", value=2, step=1, min_value=1, max_value=20)
+        max_search     = st.number_input("Max search parameter", value=25, step=1, min_value=5)
 
     with st.expander("Fast Screening"):
-        rbins_fast      = st.number_input("rbins (fast)", value=5, step=1, min_value=1,
-                                          help="Bin size for fast screening (larger bins = faster)")
-        rmin            = st.number_input("rmin (Å)", value=2.0, step=0.1,
-                                          help="Minimum distance for refinement (typically 1.5-2.5 Å)")
-        rmax_fast       = st.number_input("rmax fast (Å)", value=15.0, step=1.0,
-                                          help="Maximum distance for fast screening")
-        threshold_fast  = st.number_input("Threshold % (fast)", value=5.0, step=1.0,
-                                          help="Rw tolerance for candidate selection: structures with Rw within min(Rw) ± threshold% are kept")
+        rbins_fast      = st.number_input("rbins (fast)", value=5, step=1, min_value=1)
+        rmin            = st.number_input("rmin (Å)", value=2.0, step=0.1)
+        rmax_fast       = st.number_input("rmax fast (Å)", value=15.0, step=1.0)
+        threshold_fast  = st.number_input("Threshold % (fast)", value=5.0, step=1.0)
 
     with st.expander("Fine Refinement"):
-        rbins_fine = st.number_input("rbins (fine)", value=1, step=1, min_value=1,
-                                     help="Bin size for fine refinement (1 Å recommended for high precision)")
-
-    with st.expander("Instrument Parameters"):
-        qdamp  = st.number_input("Qdamp",  value=0.043, step=0.001, min_value=0.0, format="%f",
-                                 help="PDF envelope dampening factor due to limited Q-resolution (used in both fast and fine refinements)")
-        qbroad = st.number_input("Qbroad", value=0.0300, step=0.01,  min_value=0.0, format="%f",
-                                 help="PDF peak broadening factor from Q-resolution (used in both fast and fine refinements)")
+        rbins_fine = st.number_input("rbins (fine)", value=1, step=1, min_value=1)
 
 # ════════════════════════════════════════════════════════════════════════════════
 # MAIN PANEL
@@ -297,19 +252,19 @@ with col_left:
             st.success(f"✓ Loaded **{gr_file.name}** — {len(r_data)} data points, "
                        f"r ∈ [{r_data.min():.2f}, {r_data.max():.2f}] Å")
 
-            # Auto-detect r_coh as soon as .gr file is loaded
-            cache_key = f"r_coh_{gr_file.name}"
-            if cache_key not in st.session_state:
+            # Auto-detect r_coh as soon as both files are available
+            cache_key = f"r_coh_{gr_file.name}_{cif_file_up.name if cif_file_up else ''}"
+            if cif_file_up is not None and cache_key not in st.session_state:
                 with st.spinner("🔍 Auto-detecting r_coh…"):
                     tmp_rcoh = tempfile.mkdtemp(prefix="rcoh_")
                     try:
-                        import pdfanalysis
-                        StructureGenerator = pdfanalysis.StructureGenerator
+                        from PDF_BatchAnalysis import StructureGenerator
                         gr_tmp  = os.path.join(tmp_rcoh, gr_file.name)
-                        gr_file.seek(0)
-                        open(gr_tmp, "wb").write(gr_file.read())
+                        cif_tmp = os.path.join(tmp_rcoh, cif_file_up.name)
+                        gr_file.seek(0);     open(gr_tmp,  "wb").write(gr_file.read())
+                        cif_file_up.seek(0); open(cif_tmp, "wb").write(cif_file_up.read())
                         gen = StructureGenerator(
-                            pdfpath=tmp_rcoh, cif_file=None, auto_mode=True,
+                            pdfpath=tmp_rcoh, cif_file=cif_tmp, auto_mode=True,
                             pdf_file=gr_tmp, derivative_sigma=3.0,
                             amplitude_sigma=2.0, window_size=20)
                         detected = gen.analyze_pdf_and_get_rmax()
@@ -319,8 +274,11 @@ with col_left:
                         st.warning(f"Auto-detection failed: {e}")
                     finally:
                         shutil.rmtree(tmp_rcoh, ignore_errors=True)
-            else:
+            elif cache_key in st.session_state:
                 st.session_state["r_coh_detected"] = st.session_state[cache_key]
+
+            if cif_file_up is None:
+                st.info("💡 Upload the .cif file to enable automatic r_coh detection.")
 
         except Exception as e:
             st.error(f"Could not parse file: {e}")
@@ -365,8 +323,8 @@ with col_right:
     # Readiness checks
     ready_gr  = gr_file is not None and r_data is not None
     ready_cif = cif_file_up is not None
-    # output_dir is optional and will be created if needed
-    ready = ready_gr and ready_cif
+    ready_out = bool(output_dir) and os.path.isdir(output_dir)
+    ready = ready_gr and ready_cif and ready_out
 
     col_chk1, col_chk2 = st.columns(2)
     with col_chk1:
@@ -384,23 +342,17 @@ with col_right:
 
     run_button = st.button("🚀 Launch Analysis", disabled=not ready, use_container_width=True)
 
-    if not ready:
+    if not ready_out:
+        st.warning("⚠️ Set a valid output directory in the sidebar")
+    elif not ready:
         st.caption("Upload both files to enable the analysis.")
 
     st.divider()
 
     # ── Run analysis ──────────────────────────────────────────────────────────
     if run_button and ready:
-        # Create a working directory: use output_dir if provided, else temp
-        use_temp_dir = not output_dir  # Track if we should cleanup later
-        if output_dir:
-            # User specified directory - create it if needed, then create subdirectory and keep files
-            os.makedirs(output_dir, exist_ok=True)
-            tmp_dir = tempfile.mkdtemp(prefix="pdf_app_", dir=output_dir)
-        else:
-            # No directory specified - use system temp and cleanup later
-            tmp_dir = tempfile.mkdtemp(prefix="pdf_app_")
-        
+        # Create a working subdirectory inside the chosen output directory
+        tmp_dir  = tempfile.mkdtemp(prefix="pdf_app_", dir=output_dir)
         gr_path  = os.path.join(tmp_dir, gr_file.name)
         cif_path = os.path.join(tmp_dir, cif_file_up.name)
 
@@ -478,8 +430,6 @@ with col_right:
                     rmax_fast=float(rmax_fast),
                     threshold_percent_fast=float(threshold_fast),
                     rbins_fine=int(rbins_fine),
-                    qdamp=float(qdamp),
-                    qbroad=float(qbroad),
                     verbose=False,
                 )
             finally:
@@ -539,18 +489,14 @@ with col_right:
 
         except ImportError as e:
             progress_bar.empty()
-            st.error(f"Import error: {e}\n\nMake sure the pdfanalysis package is properly installed "
-                     f"with all required modules.")
+            st.error(f"Import error: {e}\n\nMake sure `PDF_BatchAnalysis.py` and `pdfanalysis.py` "
+                     f"are in the same directory as this app.")
         except Exception as e:
             progress_bar.empty()
             st.exception(e)
         finally:
-            # Only cleanup if using temporary directory
-            if use_temp_dir:
-                shutil.rmtree(tmp_dir, ignore_errors=True)
-                st.caption("🗑️ Temporary working folder cleaned up")
-            else:
-                st.success(f"✅ Results saved to: {tmp_dir}")
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            st.caption("🗑️ Temporary working folder cleaned up")
 
     # ── Previous detection display ────────────────────────────────────────────
     elif "r_coh_detected" in st.session_state:
@@ -569,21 +515,3 @@ with col_right:
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.divider()
 st.caption("PDF Structure Analyzer · Built with Streamlit · Powered by diffpy.cmi")
-
-
-# ── CLI entry point ───────────────────────────────────────────────────────────
-def main():
-    """Entry point for CLI command 'pdfanalysis-app'"""
-    import subprocess
-    import sys
-    subprocess.run(
-        [sys.executable, "-m", "streamlit", "run", __file__] + sys.argv[1:],
-        check=True,
-    )
-
-"""
-if __name__ == "__main__":
-    from streamlit.runtime import exists as _st_exists
-    if not _st_exists():
-        main()
-"""
