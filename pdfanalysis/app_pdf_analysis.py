@@ -581,8 +581,9 @@ def main():
         check=True,
     )
 
-
+"""
 if __name__ == "__main__":
     from streamlit.runtime import exists as _st_exists
     if not _st_exists():
         main()
+"""
