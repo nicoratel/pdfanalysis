@@ -515,3 +515,13 @@ with col_right:
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.divider()
 st.caption("PDF Structure Analyzer · Built with Streamlit · Powered by diffpy.cmi")
+
+# ── CLI entry point ───────────────────────────────────────────────────────────
+def main():
+    """Entry point for CLI command 'pdfanalysis-app'"""
+    import subprocess
+    import sys
+    subprocess.run(
+        [sys.executable, "-m", "streamlit", "run", __file__] + sys.argv[1:],
+        check=True,
+    )
