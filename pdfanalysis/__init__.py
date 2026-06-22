@@ -17,7 +17,7 @@ from .structure_report_generator import StructureReportGenerator
 from .pdf_refinement import PDFRefinement
 from .pdf_refinement_fast import PDFRefinementFast
 from .structure_screener import StructureScreener
-from .pdfanalysis import perform_automatic_pdf_analysis
+from .core import perform_automatic_pdf_analysis
 
 __all__ = [
     'PDFExtractor',
