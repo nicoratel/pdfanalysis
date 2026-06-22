@@ -5,8 +5,8 @@ import os
 import glob
 import re
 from tqdm import tqdm
-from .pdf_refinement import PDFRefinement
-from .pdf_refinement_fast import PDFRefinementFast
+from pdfanalysis.pdf_refinement import PDFRefinement
+from pdfanalysis.pdf_refinement_fast import PDFRefinementFast
 
 
 class StructureScreener():
