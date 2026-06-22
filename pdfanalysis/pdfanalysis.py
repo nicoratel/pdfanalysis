@@ -1,8 +1,8 @@
-from .structure_screener import StructureScreener
-from .structure_generator import StructureGenerator
-from .pdf_refinement import PDFRefinement
-from .structure_custom import StructureCustom
-from .structure_report_generator import StructureReportGenerator
+from pdfanalysis.structure_screener import StructureScreener
+from pdfanalysis.structure_generator import StructureGenerator
+from pdfanalysis.pdf_refinement import PDFRefinement
+from pdfanalysis.structure_custom import StructureCustom
+from pdfanalysis.structure_report_generator import StructureReportGenerator
 import numpy as np
 import glob
 import os
