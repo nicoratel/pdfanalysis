@@ -263,7 +263,7 @@ with col_left:
                 with st.spinner("🔍 Auto-detecting r_coh…"):
                     tmp_rcoh = tempfile.mkdtemp(prefix="rcoh_")
                     try:
-                        from PDF_BatchAnalysis import StructureGenerator
+                        from pdfanylysis.PDF_BatchAnalysis import StructureGenerator
                         gr_tmp  = os.path.join(tmp_rcoh, gr_file.name)
                         cif_tmp = os.path.join(tmp_rcoh, cif_file_up.name)
                         gr_file.seek(0);     open(gr_tmp,  "wb").write(gr_file.read())
@@ -412,7 +412,7 @@ with col_right:
         all_lines = log_lines  # reference shared with LiveStream
 
         try:
-            from pdfanalysis import perform_automatic_pdf_analysis
+            from pdfanalysis.pdfanalysis import perform_automatic_pdf_analysis
 
             log_lines.append("✓ Module imported")
             log_lines.append(f"r_coh = {r_coh_value:.2f} Å")
