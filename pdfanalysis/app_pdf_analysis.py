@@ -12,8 +12,13 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 import os
+import sys
 import tempfile
 import shutil
+
+print("cwd", os.getcwd())
+print("script =", __file__)
+print("sys.path =", sys.path)
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
