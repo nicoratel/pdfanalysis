@@ -412,7 +412,7 @@ with col_right:
         all_lines = log_lines  # reference shared with LiveStream
 
         try:
-            from pdfanalysis.pdfanalysis import perform_automatic_pdf_analysis
+            from pdfanalysis.core import perform_automatic_pdf_analysis
 
             log_lines.append("✓ Module imported")
             log_lines.append(f"r_coh = {r_coh_value:.2f} Å")
