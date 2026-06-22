@@ -263,7 +263,7 @@ with col_left:
                 with st.spinner("🔍 Auto-detecting r_coh…"):
                     tmp_rcoh = tempfile.mkdtemp(prefix="rcoh_")
                     try:
-                        from pdfanylysis.PDF_BatchAnalysis import StructureGenerator
+                        from pdfanalysis.PDF_BatchAnalysis import StructureGenerator
                         gr_tmp  = os.path.join(tmp_rcoh, gr_file.name)
                         cif_tmp = os.path.join(tmp_rcoh, cif_file_up.name)
                         gr_file.seek(0);     open(gr_tmp,  "wb").write(gr_file.read())
